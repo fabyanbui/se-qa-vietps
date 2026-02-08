@@ -1,0 +1,3 @@
+[submodule "Public-Sector-Application"]
+	path = Public-Sector-Application
+	url = git@github.com:fabyanbui/Public-Sector-Application.git
