@@ -1,2 +1,0 @@
-model_name,accuracy,precision,recall,f1,support
-gpt-4o-mini,0.5,0.0,0.0,0.0,40
