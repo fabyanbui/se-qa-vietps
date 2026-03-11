@@ -1,0 +1,51 @@
+# VietPS-Hallu LLM Testing App — Example Configuration
+# Copy to config.yaml and fill in your API keys
+
+dataset:
+  # Path to the submodule data files (relative to project root)
+  submodule_path: "Public-Sector-Application"
+  # Primary test dataset (full ~12k samples)
+  primary_dataset: "C_Generate/postgenerate_gpt.csv"
+  # Gold standard (1000 human-annotated samples)
+  gold_dataset: "CH_Annotate/annotated_data/human1.csv"
+  # Historical evaluation baselines (for regression comparison)
+  baseline_dir: "DK_Evaluate"
+  # Prompt templates
+  template_file: "DK_Evaluate/Template/template.csv"
+
+evaluation:
+  # Number of samples to test per run (null = all)
+  sample_size: 100
+  # Filter by specific pattern (0-3, null = all patterns)
+  pattern: null
+  # Test with or without TTHC knowledge context
+  mode: "without_knowledge"   # "with_knowledge" | "without_knowledge" | "both"
+
+models:
+  - name: "gpt-4o-mini"
+    provider: "openai"
+    api_key: "sk-..."           # Replace with your key
+    endpoint: "https://api.openai.com/v1"
+
+  - name: "gemini-2.0-flash"
+    provider: "gemini"
+    api_key: "AIza..."          # Replace with your key
+
+  - name: "deepseek-v3"
+    provider: "openrouter"
+    api_key: "sk-or-..."        # Replace with your OpenRouter key
+    model_id: "deepseek/deepseek-chat"
+
+  - name: "claude-3.5-haiku"
+    provider: "openrouter"
+    api_key: "sk-or-..."        # Replace with your OpenRouter key
+    model_id: "anthropic/claude-3-5-haiku"
+
+  - name: "local-model"
+    provider: "lmstudio"
+    endpoint: "http://localhost:1234/v1"   # LM Studio local server
+    model_id: "loaded-model-name"
+
+output:
+  results_dir: "results"
+  generate_allure: true

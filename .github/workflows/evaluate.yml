@@ -1,0 +1,91 @@
+name: Scheduled LLM Evaluation
+
+on:
+  # Run every Monday at 00:00 UTC
+  schedule:
+    - cron: "0 0 * * 1"
+  # Also allow manual trigger from GitHub Actions UI
+  workflow_dispatch:
+    inputs:
+      sample_size:
+        description: "Number of test cases to evaluate"
+        required: false
+        default: "50"
+      mode:
+        description: "Evaluation mode"
+        required: false
+        default: "without_knowledge"
+        type: choice
+        options:
+          - without_knowledge
+          - with_knowledge
+          - both
+
+jobs:
+  evaluate:
+    name: Run LLM evaluation
+    runs-on: ubuntu-latest
+    # Only run if API keys are configured as secrets
+    if: ${{ secrets.OPENAI_API_KEY != '' || secrets.OPENROUTER_API_KEY != '' }}
+
+    steps:
+      - name: Checkout repository (with submodule)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate config from secrets
+        run: |
+          cat > config.yaml << 'EOF'
+          dataset:
+            submodule_path: "Public-Sector-Application"
+            primary_dataset: "C_Generate/postgenerate_gpt.csv"
+            gold_dataset: "CH_Annotate/annotated_data/human1.csv"
+            template_file: "DK_Evaluate/Template/template.csv"
+          evaluation:
+            sample_size: ${{ github.event.inputs.sample_size || '50' }}
+            mode: "${{ github.event.inputs.mode || 'without_knowledge' }}"
+          models:
+            - name: "gpt-4o-mini"
+              provider: "openai"
+              api_key: "${{ secrets.OPENAI_API_KEY }}"
+            - name: "deepseek-v3"
+              provider: "openrouter"
+              api_key: "${{ secrets.OPENROUTER_API_KEY }}"
+              model_id: "deepseek/deepseek-chat"
+          output:
+            results_dir: "results"
+          EOF
+
+      - name: Run evaluation
+        run: python -m vietps_tester.cli --config config.yaml
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+
+      - name: Upload results as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-results-${{ github.run_id }}
+          path: results/
+          retention-days: 30
+
+      - name: Commit results to repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add results/
+          git diff --staged --quiet || git commit -m "chore: add evaluation results [skip ci]
+
+          Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
+          git push
+        continue-on-error: true
