@@ -4,10 +4,10 @@
 dataset:
   # Path to the submodule data files (relative to project root)
   submodule_path: "Public-Sector-Application"
-  # Primary test dataset (full ~12k samples)
-  primary_dataset: "C_Generate/postgenerate_gpt.csv"
-  # Gold standard (1000 human-annotated samples)
-  gold_dataset: "CH_Annotate/annotated_data/human1.csv"
+  # Final enriched dataset (Q&A pairs + TTHC knowledge links)
+  primary_dataset: "E_Analyze/Final_Data/postgenerate_gpt.csv"
+  # TTHC procedure knowledge (used for with_knowledge evaluations)
+  tthc_dataset: "E_Analyze/Final_Data/postprocessed_tthc.csv"
   # Historical evaluation baselines (for regression comparison)
   baseline_dir: "DK_Evaluate"
   # Prompt templates

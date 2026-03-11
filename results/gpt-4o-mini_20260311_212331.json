@@ -1,0 +1,589 @@
+{
+  "model_name": "gpt-4o-mini",
+  "mode": "without_knowledge",
+  "timestamp": "20260311_212331",
+  "pass_rate": 0.5,
+  "passed": 20,
+  "failed": 20,
+  "total": 40,
+  "metrics": {
+    "overall": {
+      "accuracy": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 40
+    },
+    "by_pattern": {
+      "-1": {
+        "accuracy": 1.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 20
+      },
+      "0": {
+        "accuracy": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 3
+      },
+      "3": {
+        "accuracy": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 6
+      },
+      "2": {
+        "accuracy": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 6
+      },
+      "1": {
+        "accuracy": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 5
+      }
+    },
+    "by_ministry": {
+      "Bộ Quốc phòng": {
+        "accuracy": 0.5,
+        "f1": 0.0,
+        "support": 4
+      },
+      "Bộ Công an": {
+        "accuracy": 0.5,
+        "f1": 0.0,
+        "support": 6
+      },
+      "Bộ Khoa học và Công nghệ ( Bộ TTTT cũ)": {
+        "accuracy": 0.5,
+        "f1": 0.0,
+        "support": 8
+      },
+      "Bộ Ngoại giao": {
+        "accuracy": 0.5,
+        "f1": 0.0,
+        "support": 2
+      },
+      "Bộ Nội vụ": {
+        "accuracy": 0.5,
+        "f1": 0.0,
+        "support": 2
+      },
+      "Bộ Nông nghiệp và Môi trường": {
+        "accuracy": 0.5,
+        "f1": 0.0,
+        "support": 2
+      },
+      "Bộ Y tế": {
+        "accuracy": 0.5,
+        "f1": 0.0,
+        "support": 2
+      },
+      "Bộ Tư pháp": {
+        "accuracy": 0.5,
+        "f1": 0.0,
+        "support": 10
+      },
+      "Bộ Tài nguyên và Môi trường": {
+        "accuracy": 0.5,
+        "f1": 0.0,
+        "support": 2
+      },
+      "Bộ Giao thông vận tải": {
+        "accuracy": 0.5,
+        "f1": 0.0,
+        "support": 2
+      }
+    }
+  },
+  "results": [
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19833&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19833&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Quốc phòng",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5459.01,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19833&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19833&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 0,
+      "ministry": "Bộ Quốc phòng",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5450.43,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19508&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19508&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Công an",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5597.16,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19508&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19508&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 0,
+      "ministry": "Bộ Công an",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5506.02,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=13210&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=13210&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Khoa học và Công nghệ ( Bộ TTTT cũ)",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5420.4,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=13210&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=13210&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 3,
+      "ministry": "Bộ Khoa học và Công nghệ ( Bộ TTTT cũ)",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5433.34,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=14259&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=14259&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Ngoại giao",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5407.53,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=14259&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=14259&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 3,
+      "ministry": "Bộ Ngoại giao",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5419.86,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19555&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19555&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Công an",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5444.85,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19555&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19555&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 2,
+      "ministry": "Bộ Công an",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5470.3,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=13318&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=13318&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Khoa học và Công nghệ ( Bộ TTTT cũ)",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5441.29,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=13318&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=13318&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 3,
+      "ministry": "Bộ Khoa học và Công nghệ ( Bộ TTTT cũ)",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5449.96,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=30430&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=30430&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Nội vụ",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5462.87,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=30430&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=30430&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 0,
+      "ministry": "Bộ Nội vụ",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5510.83,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=15014&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=15014&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Nông nghiệp và Môi trường",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5488.94,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=15014&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=15014&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 1,
+      "ministry": "Bộ Nông nghiệp và Môi trường",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5481.71,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=13290&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=13290&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Khoa học và Công nghệ ( Bộ TTTT cũ)",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5400.88,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=13290&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=13290&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 2,
+      "ministry": "Bộ Khoa học và Công nghệ ( Bộ TTTT cũ)",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5435.33,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=13631&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=13631&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Khoa học và Công nghệ ( Bộ TTTT cũ)",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5464.43,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=13631&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=13631&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 3,
+      "ministry": "Bộ Khoa học và Công nghệ ( Bộ TTTT cũ)",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5447.39,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19992&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19992&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Quốc phòng",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5430.78,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19992&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19992&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 2,
+      "ministry": "Bộ Quốc phòng",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5430.8,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=15799&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=15799&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Y tế",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5435.89,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=15799&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=15799&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 1,
+      "ministry": "Bộ Y tế",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5520.78,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17463&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17463&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Tư pháp",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5493.29,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17463&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17463&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 1,
+      "ministry": "Bộ Tư pháp",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5459.07,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17306&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17306&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Tư pháp",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5519.26,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17306&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17306&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 3,
+      "ministry": "Bộ Tư pháp",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5445.08,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17159&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17159&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Tư pháp",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5415.09,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17159&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17159&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 3,
+      "ministry": "Bộ Tư pháp",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5426.01,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=15426&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=15426&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Tài nguyên và Môi trường",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5429.71,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=15426&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=15426&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 2,
+      "ministry": "Bộ Tài nguyên và Môi trường",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5414.32,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19449&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19449&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Công an",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5425.41,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19449&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19449&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 1,
+      "ministry": "Bộ Công an",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5488.43,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17073&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17073&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Tư pháp",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5596.45,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17073&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17073&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 1,
+      "ministry": "Bộ Tư pháp",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5446.41,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=12780&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=12780&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Giao thông vận tải",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5480.34,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=12780&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=12780&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 2,
+      "ministry": "Bộ Giao thông vận tải",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5487.93,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17147&row_limit=1::correct",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17147&row_limit=1",
+      "is_hallucinated_truth": false,
+      "pattern": -1,
+      "ministry": "Bộ Tư pháp",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": true,
+      "latency_ms": 5448.23,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "id": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17147&row_limit=1::hallucinated",
+      "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=17147&row_limit=1",
+      "is_hallucinated_truth": true,
+      "pattern": 2,
+      "ministry": "Bộ Tư pháp",
+      "predicted_label": "Không",
+      "predicted_hallucinated": false,
+      "passed": false,
+      "latency_ms": 5416.77,
+      "error": "401 Client Error: Unauthorized for url: https://api.openai.com/v1/chat/completions"
+    }
+  ]
+}

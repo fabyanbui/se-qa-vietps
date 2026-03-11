@@ -2,9 +2,10 @@
 tests/unit/test_dataset_loader.py — Unit tests for DatasetLoader.
 
 Tests cover:
-  - Schema validation (pandera) on both primary and gold datasets
+  - Schema validation (pandera) on primary and gold datasets
   - Sampling by size and pattern
   - HalluTestCase structure correctness
+  - TTHC knowledge map loading and structure
   - FileNotFoundError on missing submodule
 """
 
@@ -17,7 +18,7 @@ SUBMODULE = "Public-Sector-Application"
 
 @pytest.mark.unit
 class TestDatasetLoaderPrimary:
-    """Tests for load_primary() using C_Generate/postgenerate_gpt.csv."""
+    """Tests for load_primary() using E_Analyze/Final_Data/postgenerate_gpt.csv."""
 
     def test_load_primary_returns_list(self):
         loader = DatasetLoader(SUBMODULE)
@@ -137,3 +138,67 @@ class TestDatasetLoaderErrors:
         assert isinstance(ministries, list)
         assert len(ministries) > 0
         assert all(isinstance(m, str) for m in ministries)
+
+
+@pytest.mark.unit
+class TestKnowledgeMap:
+    """Tests for load_knowledge_map() using E_Analyze/Final_Data/postprocessed_tthc.csv."""
+
+    def test_returns_dict(self):
+        loader = DatasetLoader(SUBMODULE)
+        km = loader.load_knowledge_map()
+        assert isinstance(km, dict)
+
+    def test_keys_are_qa_links(self):
+        loader = DatasetLoader(SUBMODULE)
+        km = loader.load_knowledge_map()
+        for key in list(km.keys())[:10]:
+            assert key.startswith("https://dichvucong.gov.vn"), (
+                f"Expected a dichvucong Q&A URL, got: {key}"
+            )
+
+    def test_covers_all_primary_rows(self):
+        loader = DatasetLoader(SUBMODULE)
+        cases = loader.load_primary(sample_size=20)
+        km = loader.load_knowledge_map()
+        qa_links = {tc.link for tc in cases}
+        for link in qa_links:
+            assert link in km, f"Q&A link not in knowledge map: {link}"
+
+    def test_values_are_strings(self):
+        loader = DatasetLoader(SUBMODULE)
+        km = loader.load_knowledge_map()
+        for v in list(km.values())[:20]:
+            assert isinstance(v, str)
+
+    def test_most_entries_have_knowledge(self):
+        loader = DatasetLoader(SUBMODULE)
+        km = loader.load_knowledge_map()
+        non_empty = sum(1 for v in km.values() if v.strip())
+        # At least 50% should resolve to real TTHC knowledge
+        assert non_empty / len(km) >= 0.5, (
+            f"Only {non_empty}/{len(km)} entries have knowledge text"
+        )
+
+    def test_knowledge_contains_tthc_fields(self):
+        loader = DatasetLoader(SUBMODULE)
+        km = loader.load_knowledge_map()
+        # Pick the first non-empty entry and verify it has meaningful content
+        sample = next(v for v in km.values() if v.strip())
+        # Should contain Vietnamese procedural content
+        assert len(sample) > 50, "Knowledge text seems too short"
+
+    def test_max_chars_is_respected(self):
+        loader = DatasetLoader(SUBMODULE)
+        km_short = loader.load_knowledge_map(max_chars=100)
+        for v in km_short.values():
+            assert len(v) <= 100, f"Knowledge text exceeds max_chars=100: len={len(v)}"
+
+    def test_knowledge_map_matches_primary_sample(self):
+        """With-knowledge evaluation: every sampled case can get its knowledge."""
+        loader = DatasetLoader(SUBMODULE)
+        cases = loader.load_primary(sample_size=50, seed=7)
+        km = loader.load_knowledge_map()
+        unique_links = {tc.link for tc in cases}
+        missing = unique_links - km.keys()
+        assert not missing, f"Cases with no knowledge entry: {missing}"

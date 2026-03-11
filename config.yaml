@@ -1,0 +1,11 @@
+dataset:
+  submodule_path: "Public-Sector-Application"
+evaluation:
+  sample_size: 20
+  mode: "without_knowledge"
+models:
+  - name: "gpt-4o-mini"
+    provider: "openai"
+    api_key: "sk-..."
+output:
+  results_dir: "results"

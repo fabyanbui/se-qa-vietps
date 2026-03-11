@@ -101,12 +101,20 @@ def main(argv: list[str] | None = None) -> int:
     test_cases = loader.load_primary(sample_size=sample_size)
     print(f"   Loaded {len(test_cases)} test cases (×2 correct+hallucinated per row)")
 
+    # Pre-load knowledge map once if any mode needs it
+    knowledge_map: dict = {}
+    if mode in ("with_knowledge", "both"):
+        print("📚 Building TTHC knowledge map...")
+        knowledge_map = loader.load_knowledge_map()
+        covered = sum(1 for v in knowledge_map.values() if v)
+        print(f"   {covered}/{len(knowledge_map)} Q&A entries have TTHC knowledge")
+
     modes = ["without_knowledge", "with_knowledge"] if mode == "both" else [mode]
     all_runs = []
 
     for eval_mode in modes:
         print(f"\n🚀 Running evaluation — mode: {eval_mode}")
-        runs = evaluator.run(test_cases, adapters, mode=eval_mode)
+        runs = evaluator.run(test_cases, adapters, mode=eval_mode, knowledge_map=knowledge_map)
         all_runs.extend(runs)
 
         print("\n📊 Results:")
