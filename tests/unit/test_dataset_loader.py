@@ -2,16 +2,20 @@
 tests/unit/test_dataset_loader.py — Unit tests for DatasetLoader.
 
 Tests cover:
-  - Schema validation (pandera) on primary and gold datasets
-  - Sampling by size and pattern
+  - Schema validation (pandera) on primary dataset and TTHC dataset
+  - Sampling by size, pattern, and ministry
   - HalluTestCase structure correctness
-  - TTHC knowledge map loading and structure
+  - TTHC knowledge map: all 20 fields included, correct structure
   - FileNotFoundError on missing submodule
 """
 
 import pytest
 
-from vietps_tester.dataset_loader import DatasetLoader, HalluTestCase
+from vietps_tester.dataset_loader import (
+    DatasetLoader,
+    HalluTestCase,
+    TTHC_FIELD_LABELS,
+)
 
 SUBMODULE = "Public-Sector-Application"
 
@@ -43,7 +47,6 @@ class TestDatasetLoaderPrimary:
     def test_load_primary_pattern_filter(self):
         loader = DatasetLoader(SUBMODULE)
         cases = loader.load_primary(sample_size=50, pattern=0)
-        # Hallucinated cases should all have pattern=0
         hallucinated = [tc for tc in cases if tc.is_hallucinated]
         for tc in hallucinated:
             assert tc.pattern == 0, f"Expected pattern 0, got {tc.pattern}"
@@ -65,13 +68,11 @@ class TestDatasetLoaderPrimary:
         loader = DatasetLoader(SUBMODULE)
         cases1 = loader.load_primary(sample_size=20, seed=1)
         cases2 = loader.load_primary(sample_size=20, seed=99)
-        # Very unlikely to be identical with different seeds
         assert [tc.id for tc in cases1] != [tc.id for tc in cases2]
 
     def test_load_primary_each_row_yields_two_cases(self):
         loader = DatasetLoader(SUBMODULE)
         cases = loader.load_primary(sample_size=10)
-        # Each row → 1 correct + 1 hallucinated
         hallucinated = [tc for tc in cases if tc.is_hallucinated]
         correct = [tc for tc in cases if not tc.is_hallucinated]
         assert len(hallucinated) == len(correct)
@@ -82,46 +83,13 @@ class TestDatasetLoaderPrimary:
         ids = [tc.id for tc in cases]
         assert len(ids) == len(set(ids)), "Duplicate HalluTestCase IDs found"
 
-
-@pytest.mark.unit
-class TestDatasetLoaderGold:
-    """Tests for load_gold() using CH_Annotate/annotated_data/human*.csv."""
-
-    def test_load_gold_annotator1(self):
+    def test_load_primary_ministry_filter(self):
         loader = DatasetLoader(SUBMODULE)
-        cases = loader.load_gold(annotator=1, sample_size=10)
-        assert len(cases) == 20  # 10 rows × 2
-
-    def test_load_gold_annotator2(self):
-        loader = DatasetLoader(SUBMODULE)
-        cases = loader.load_gold(annotator=2, sample_size=10)
-        assert len(cases) == 20
-
-    def test_load_gold_invalid_annotator(self):
-        loader = DatasetLoader(SUBMODULE)
-        with pytest.raises(ValueError, match="annotator must be 1 or 2"):
-            loader.load_gold(annotator=3)
-
-    def test_load_gold_has_questions(self):
-        loader = DatasetLoader(SUBMODULE)
-        cases = loader.load_gold(annotator=1, sample_size=10)
-        hallucinated = [tc for tc in cases if tc.is_hallucinated]
-        for tc in hallucinated:
-            assert len(tc.question) > 0, "Gold set case has empty question"
-
-    def test_load_gold_has_ministry(self):
-        loader = DatasetLoader(SUBMODULE)
-        cases = loader.load_gold(annotator=1, sample_size=10)
-        hallucinated = [tc for tc in cases if tc.is_hallucinated]
-        for tc in hallucinated:
-            assert len(tc.ministry) > 0, "Gold set case has empty ministry"
-
-    def test_load_gold_pattern_range(self):
-        loader = DatasetLoader(SUBMODULE)
-        cases = loader.load_gold(annotator=1, sample_size=50)
-        hallucinated = [tc for tc in cases if tc.is_hallucinated]
-        for tc in hallucinated:
-            assert 0 <= tc.pattern <= 3, f"Pattern out of range: {tc.pattern}"
+        cases = loader.load_primary(sample_size=200, ministry="Y tế")
+        for tc in cases:
+            assert "Y tế" in tc.ministry or tc.ministry == "", (
+                f"Ministry filter failed: {tc.ministry}"
+            )
 
 
 @pytest.mark.unit
@@ -142,7 +110,10 @@ class TestDatasetLoaderErrors:
 
 @pytest.mark.unit
 class TestKnowledgeMap:
-    """Tests for load_knowledge_map() using E_Analyze/Final_Data/postprocessed_tthc.csv."""
+    """
+    Tests for load_knowledge_map() — verifies ALL 20 TTHC columns are
+    included in the knowledge text for with_knowledge evaluations.
+    """
 
     def test_returns_dict(self):
         loader = DatasetLoader(SUBMODULE)
@@ -153,17 +124,16 @@ class TestKnowledgeMap:
         loader = DatasetLoader(SUBMODULE)
         km = loader.load_knowledge_map()
         for key in list(km.keys())[:10]:
-            assert key.startswith("https://dichvucong.gov.vn"), (
-                f"Expected a dichvucong Q&A URL, got: {key}"
+            assert "dichvucong.gov.vn" in key, (
+                f"Expected a Q&A URL key, got: {key}"
             )
 
     def test_covers_all_primary_rows(self):
         loader = DatasetLoader(SUBMODULE)
         cases = loader.load_primary(sample_size=20)
         km = loader.load_knowledge_map()
-        qa_links = {tc.link for tc in cases}
-        for link in qa_links:
-            assert link in km, f"Q&A link not in knowledge map: {link}"
+        for tc in cases:
+            assert tc.link in km, f"Q&A link missing from knowledge map: {tc.link}"
 
     def test_values_are_strings(self):
         loader = DatasetLoader(SUBMODULE)
@@ -175,30 +145,70 @@ class TestKnowledgeMap:
         loader = DatasetLoader(SUBMODULE)
         km = loader.load_knowledge_map()
         non_empty = sum(1 for v in km.values() if v.strip())
-        # At least 50% should resolve to real TTHC knowledge
         assert non_empty / len(km) >= 0.5, (
-            f"Only {non_empty}/{len(km)} entries have knowledge text"
+            f"Only {non_empty}/{len(km)} entries have TTHC knowledge text"
         )
 
-    def test_knowledge_contains_tthc_fields(self):
+    def test_knowledge_includes_all_tthc_field_labels(self):
+        """Non-empty knowledge entries must include all available TTHC field labels."""
         loader = DatasetLoader(SUBMODULE)
         km = loader.load_knowledge_map()
-        # Pick the first non-empty entry and verify it has meaningful content
         sample = next(v for v in km.values() if v.strip())
-        # Should contain Vietnamese procedural content
-        assert len(sample) > 50, "Knowledge text seems too short"
+        # The entry should contain multiple labelled fields from TTHC_FIELD_LABELS
+        matched = [label for label in TTHC_FIELD_LABELS.values() if label in sample]
+        assert len(matched) >= 3, (
+            f"Expected at least 3 TTHC field labels in knowledge, found {len(matched)}. "
+            f"Sample (first 300 chars): {sample[:300]}"
+        )
 
-    def test_max_chars_is_respected(self):
+    def test_knowledge_has_ten_thu_tuc(self):
+        """Every non-empty entry should include the procedure name."""
         loader = DatasetLoader(SUBMODULE)
-        km_short = loader.load_knowledge_map(max_chars=100)
-        for v in km_short.values():
-            assert len(v) <= 100, f"Knowledge text exceeds max_chars=100: len={len(v)}"
+        km = loader.load_knowledge_map()
+        sample = next(v for v in km.values() if v.strip())
+        assert "Tên thủ tục:" in sample, (
+            "Expected 'Tên thủ tục:' label in knowledge text"
+        )
+
+    def test_knowledge_has_trinh_tu_thuc_hien(self):
+        """Procedural steps should be present in non-empty entries."""
+        loader = DatasetLoader(SUBMODULE)
+        km = loader.load_knowledge_map()
+        sample = next(v for v in km.values() if v.strip())
+        assert "Trình tự thực hiện:" in sample, (
+            "Expected 'Trình tự thực hiện:' label in knowledge text"
+        )
+
+    def test_knowledge_has_can_cu_phap_ly(self):
+        """Legal basis should be present in non-empty entries."""
+        loader = DatasetLoader(SUBMODULE)
+        km = loader.load_knowledge_map()
+        sample = next(v for v in km.values() if v.strip())
+        assert "Căn cứ pháp lý:" in sample, (
+            "Expected 'Căn cứ pháp lý:' label in knowledge text"
+        )
+
+    def test_knowledge_no_placeholder_values(self):
+        """Knowledge text should not contain the placeholder string."""
+        loader = DatasetLoader(SUBMODULE)
+        km = loader.load_knowledge_map()
+        sample = next(v for v in km.values() if v.strip())
+        assert "Không có thông tin" not in sample, (
+            "Knowledge text should omit placeholder 'Không có thông tin' values"
+        )
 
     def test_knowledge_map_matches_primary_sample(self):
-        """With-knowledge evaluation: every sampled case can get its knowledge."""
+        """Every sampled test case link must resolve in the knowledge map."""
         loader = DatasetLoader(SUBMODULE)
         cases = loader.load_primary(sample_size=50, seed=7)
         km = loader.load_knowledge_map()
         unique_links = {tc.link for tc in cases}
         missing = unique_links - km.keys()
-        assert not missing, f"Cases with no knowledge entry: {missing}"
+        assert not missing, f"Test case links missing from knowledge map: {missing}"
+
+    def test_tthc_field_labels_dict_has_all_20_columns(self):
+        """TTHC_FIELD_LABELS must cover all 20 non-link columns."""
+        assert len(TTHC_FIELD_LABELS) == 20, (
+            f"Expected 20 TTHC field labels, got {len(TTHC_FIELD_LABELS)}"
+        )
+

@@ -101,12 +101,10 @@ This project **repurposes that dataset as an automated test suite**, treating ea
 se-qa-vietps/
 │
 ├── Public-Sector-Application/       ← git submodule (VietPS-Hallu dataset)
-│   ├── C_Generate/
-│   │   └── postgenerate_gpt.csv     ← 3,717 generated Q&A pairs (primary test data)
-│   ├── CH_Annotate/
-│   │   └── annotated_data/
-│   │       ├── human1.csv           ← 300 human-annotated gold samples
-│   │       └── human2.csv
+│   ├── E_Analyze/
+│   │   └── Final_Data/
+│   │       ├── postgenerate_gpt.csv     ← 3,717 generated Q&A pairs (primary test data)
+│   │       └── postprocessed_tthc.csv  ← 1,820 TTHC procedures, 21 columns (knowledge base)
 │   └── DK_Evaluate/
 │       ├── Template/template.csv    ← Vietnamese evaluation prompt templates
 │       ├── Close_source/            ← Baseline eval CSVs (GPT-4o-mini, Gemini, etc.)
@@ -159,25 +157,44 @@ se-qa-vietps/
 The submodule `Public-Sector-Application/` contains the **VietPS-Hallu** dataset used as a
 thesis research artefact. Here is what is relevant to the testing app.
 
-### Primary Dataset — `C_Generate/postgenerate_gpt.csv`
+### Primary Dataset — `E_Analyze/Final_Data/postgenerate_gpt.csv`
 
 | Column | Description |
 |---|---|
 | `link` | Source URL on dichvucong.gov.vn |
+| `phanLoai` | Procedure category |
+| `boNganh` | Originating ministry/department |
 | `cauHoi` | The administrative question (Vietnamese) |
 | `cauTraLoi` | A correct answer (ground truth: **not hallucinated**) |
 | `cauTraLoiAoGiac` | A manufactured hallucinated answer (ground truth: **hallucinated**) |
+| `TTHCLienQuan` | List of related TTHC procedure URLs (stringified Python list) |
+| `cauHoiLienQuan` | Related questions |
 | `pattern` | Integer 0–3 (hallucination type — see below) |
-| `boNganh` | Originating ministry/department |
 
 **Size:** 3,717 rows → **7,434 test cases** (2 per row: correct + hallucinated).
 
-### Gold Dataset — `CH_Annotate/annotated_data/human1.csv`
+### TTHC Knowledge Base — `E_Analyze/Final_Data/postprocessed_tthc.csv`
 
-300 manually selected and human-annotated samples. Same structure as the primary dataset
-plus `phanLoai` (category), `TTHCLienQuan`, `cauHoiLienQuan` (related procedure links).
+1,820 rows describing real Vietnamese administrative procedures. Each row is linked
+to Q&A pairs via `TTHCLienQuan`. All 20 non-link fields are included when building
+knowledge context for `with_knowledge` evaluations:
 
-Use the gold dataset for highest-confidence regression testing.
+| Field | Label |
+|---|---|
+| `tenThuTuc` | Tên thủ tục |
+| `trinhTuThucHien` | Trình tự thực hiện |
+| `cachThucThucHien` | Cách thức thực hiện |
+| `thanhPhanHoSo` | Thành phần hồ sơ |
+| `doiTuongThucHien` | Đối tượng thực hiện |
+| `coQuanThucHien` | Cơ quan thực hiện |
+| `ketQuaThucHien` | Kết quả thực hiện |
+| `canCuPhapLy` | Căn cứ pháp lý |
+| `yeuCauDieuKienThucHien` | Yêu cầu/Điều kiện thực hiện |
+| `moTa` | Mô tả |
+| … (10 more fields) | |
+
+Fields containing `"Không có thông tin"`, `"."`, or empty values are omitted
+from the generated knowledge text.
 
 ### Hallucination Patterns
 
@@ -223,7 +240,7 @@ git submodule update --init --recursive
 Verify the submodule is populated:
 
 ```bash
-ls Public-Sector-Application/C_Generate/postgenerate_gpt.csv
+ls Public-Sector-Application/E_Analyze/Final_Data/postgenerate_gpt.csv
 # Should print the file path — not an error
 ```
 
@@ -510,20 +527,6 @@ gemini-2.0-flash,0.5500,0.5400,0.6750,0.6000,40
 deepseek-v3,0.5250,0.5100,0.5100,0.5100,40
 ```
 
-### Use the gold dataset (Python API)
-
-```python
-from vietps_tester.dataset_loader import DatasetLoader
-from vietps_tester.evaluator import Evaluator
-
-loader = DatasetLoader("Public-Sector-Application")
-# 300 human-annotated gold samples, both correct + hallucinated answers
-gold_cases = loader.load_gold(annotator=1, sample_size=50)
-
-evaluator = Evaluator("Public-Sector-Application")
-# ... pass your adapter
-```
-
 ### Full Python API
 
 ```python
@@ -633,14 +636,19 @@ Filter controls in the sidebar let you narrow by model name and evaluation mode.
 **Classes:**
 - `DatasetLoader(submodule_path)` — main loader
   - `load_primary(sample_size, pattern, ministry, seed)` → `list[HalluTestCase]`
-  - `load_gold(annotator, sample_size, pattern, ministry, seed)` → `list[HalluTestCase]`
+  - `load_knowledge_map()` → `dict[str, str]` (Q&A URL → full TTHC knowledge text)
   - `available_ministries()` → `list[str]`
 - `HalluTestCase` (frozen dataclass) — `id, link, question, answer, is_hallucinated, pattern, ministry`
-- `PostGenerateSchema` (pandera) — validates primary CSV columns
-- `AnnotatedSchema` (pandera) — validates gold CSV columns
+- `PostGenerateSchema` (pandera) — validates `postgenerate_gpt.csv` columns
+- `TTHCSchema` (pandera) — validates all 21 columns of `postprocessed_tthc.csv`
+- `TTHC_FIELD_LABELS` (dict) — maps 20 TTHC field names → Vietnamese display labels
 
 Schema validation runs automatically on load. If the submodule CSV is corrupted or
 columns are missing, a `pandera.errors.SchemaError` is raised before any test cases are built.
+
+`load_knowledge_map()` resolves each Q&A row's `TTHCLienQuan` list to the matching TTHC
+procedure rows and formats all 20 non-link fields as `"Label: value"` lines (skipping fields
+that contain `"Không có thông tin"`, `"."`, or NaN).
 
 ### `prompt_builder.py`
 
