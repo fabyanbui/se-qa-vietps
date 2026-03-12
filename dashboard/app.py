@@ -130,7 +130,7 @@ if filtered:
         ]
     ).drop_duplicates(subset=["Model", "Mode"])
 
-    st.dataframe(overview_df, use_container_width=True)
+    st.dataframe(overview_df, width="stretch")
 
     # Accuracy bar chart
     st.subheader("📈 Accuracy by Model")
@@ -168,7 +168,7 @@ if pattern_rows:
     pivot = pattern_df.pivot_table(
         index="Model", columns="Pattern", values="Accuracy"
     ).fillna(0)
-    st.dataframe(pivot.style.format("{:.1%}"), use_container_width=True)
+    st.dataframe(pivot.style.format("{:.1%}"), width="stretch")
 
 # ── Ministry breakdown ────────────────────────────────────────────────────────
 
@@ -202,7 +202,7 @@ if filtered:
         ).sort_values("Accuracy", ascending=False)
         st.dataframe(
             ministry_df.style.format({"Accuracy": "{:.1%}", "F1": "{:.1%}"}),
-            use_container_width=True,
+            width="stretch",
         )
     else:
         st.info("No ministry-level data in this run (gold dataset required).")
